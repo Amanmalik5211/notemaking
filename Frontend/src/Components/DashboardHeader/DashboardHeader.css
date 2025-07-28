@@ -1,0 +1,54 @@
+.dashboard-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.logo {
+  height: 3rem;
+}
+
+.navbar-title {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.signout-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.4rem;
+  transition: background-color 0.2s ease;
+}
+
+.signout-button:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 600px) {
+  .dashboard-navbar {
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .signout-button {
+    align-self: flex-end;
+  }
+}
+
+.dashboard-content {
+  padding: 2rem;
+}
