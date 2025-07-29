@@ -5,6 +5,8 @@ import { MdDelete } from "react-icons/md";
 import CreateNotePopup from '../../Components/CreateNotePopup/CreateNotePopup';
 import axios from 'axios';
 import { useApi } from '../../Components/ContextApi';
+import { toast } from 'react-toastify';
+
 
 type Note = {
   _id: string;
@@ -26,8 +28,8 @@ const Dashboard = () => {
       setName(name);
       setEmail(email);
       setNotes(notes);
-    } catch (error) {
-      console.error('Failed to fetch user details:', error);
+    } catch (error: any) {
+        toast.error(error.response?.data?.message || 'Something went wrong');
     }
   };
 
@@ -39,11 +41,11 @@ const Dashboard = () => {
     try {
       const res = await axios.post(`${baseURL}/delete-note`, { noteId }, { withCredentials: true });
       if (res.data.success) {
-        alert(res.data.message)
+        toast.success(res.data.message)
         fetchDetails();
       }
     } catch (error: any) {
-      alert(error.res?.data?.message || "Something went wrong while deleting the note.");
+      toast.error(error.res?.data?.message);
     }
   };
 
