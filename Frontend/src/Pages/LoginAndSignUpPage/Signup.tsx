@@ -2,57 +2,82 @@ import './LoginAndSignUp.css';
 import loginImage from '../../assets/loginPageImage.jpg';
 import { useState } from 'react';
 import axios from 'axios';
+import { useApi } from '../../Components/ContextApi';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import logo from '../../assets/logo.png'
 
 const Signup = () => {
+    const { baseURL } = useApi();
     const navigate = useNavigate();
-    const baseURL = "http://localhost:4000";
     const [otp, setOtp] = useState('');
-    const [otpSent,setOtpSent] = useState(false)
+    const [otpSent, setOtpSent] = useState(false)
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [dob, setDob] = useState('')
 
+    const isValidName = (name: string) => {
+        return name.trim().length >= 2 && name.split('').every(char =>
+            /^[a-zA-Z ]$/.test(char)
+        );
+    };
+
     const getOTP = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            toast.error("Please enter a valid email address.");
+            return;
+        }
+
         try {
             setLoading(true);
-            const response = await axios.post(`${baseURL}/get-otp`, { email,type:"signup" })
+            const response = await axios.post(`${baseURL}/get-otp`, { email, type: "signup" });
 
             if (response.data.success) {
-                alert("OTP sent to your email");
+                toast.success("OTP sent to your email");
                 setOtpSent(true);
             } else {
-                alert(response.data.message || "Failed to send OTP");
+                toast.error(response.data.message || "Failed to send OTP");
             }
         } catch (err: unknown) {
             if (axios.isAxiosError(err)) {
-                alert(err.response?.data?.message || "Something went wrong");
+                toast.error(err.response?.data?.message || "Something went wrong");
             } else {
-                alert("An unexpected error occurred");
+                toast.error("An unexpected error occurred");
             }
         } finally {
             setLoading(false);
         }
     };
 
+
+
     const handleSignup = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        setLoading(true);
-
+        if (!email || !dob || !name || !otp) {
+            toast.error("All fields are required")
+            return
+        }
+        else if (!isValidName(name)) {
+            toast.error("Invalid name. Use only letters and spaces.");
+            return;
+        }
         try {
-            const res = await axios.post(`${baseURL}/verify-otp-for-signup`, {email, DOB:dob, name,otp,},{withCredentials:true});
+            setLoading(true);
+            const res = await axios.post(`${baseURL}/verify-otp-for-signup`, { email, DOB: dob, name, otp, }, { withCredentials: true });
 
             if (res.data.success) {
                 navigate('/Dashboard')
-                alert('Signup successful');
+                toast.success('Signup successful');
             } else {
-                alert(res.data.message || 'Signup failed');
+                toast.error(res.data.message || 'Signup failed');
             }
-        } catch (error) {
-            console.error('Signup error:', error);
-            alert('An error occurred during signup.');
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || 'Something went wrong');
+
         } finally {
             setLoading(false);
         }
@@ -60,6 +85,10 @@ const Signup = () => {
 
     return (
         <div className="auth-container">
+            <div className='top-logoAndName'>
+                <img src={logo} alt="company logo" />
+                <h1>HD</h1>
+            </div>
             <div className='loginSignup-form'>
                 <form className="form-box">
                     <h2>Sign up</h2>
@@ -67,12 +96,12 @@ const Signup = () => {
 
                     <fieldset className="input-fieldset">
                         <legend>Your Name</legend>
-                        <input type="text" placeholder="Enter Your Name" value={name} onChange={(e) => setName(e.target.value)}/>
+                        <input type="text" placeholder="Enter Your Name" value={name} onChange={(e) => setName(e.target.value)} />
                     </fieldset>
 
                     <fieldset className="input-fieldset">
                         <legend>Date Of Birth</legend>
-                        <input type="date" placeholder=" " value={dob} onChange={(e) => setDob(e.target.value)}/>
+                        <input type="date" placeholder=" " value={dob} onChange={(e) => setDob(e.target.value)} />
                     </fieldset>
 
                     <fieldset className="input-fieldset">
@@ -88,7 +117,7 @@ const Signup = () => {
                     {otpSent && (
                         <fieldset className="input-fieldset">
                             <legend>OTP</legend>
-                            <input type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)}/>
+                            <input type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} />
                         </fieldset>
                     )}
 
@@ -103,7 +132,7 @@ const Signup = () => {
 
                     <span style={{ alignSelf: 'center' }}>
                         Already have an account??
-                        <a style={{ color: 'blue', cursor: 'pointer', textDecoration: 'underline' }} onClick={()=>navigate('/')}>
+                        <a style={{ color: 'blue', cursor: 'pointer', textDecoration: 'underline' }} onClick={() => navigate('/')}>
                             {' '}sign in
                         </a>
                     </span>
