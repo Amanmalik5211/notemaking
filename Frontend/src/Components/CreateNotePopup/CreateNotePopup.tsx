@@ -3,20 +3,22 @@ import './CreateNotePopup.css';
 import { IoClose } from 'react-icons/io5';
 import axios from 'axios';
 import { useApi } from '../ContextApi';
+import { toast } from 'react-toastify';
+
 
 interface CreateNotePopupProps {
     onClose: () => void;
     onAdd: (note: string) => void;
 }
 
-const CreateNotePopup = ({ onClose, onAdd }: CreateNotePopupProps) => {
+const CreateNotePopup = ({ onClose }: CreateNotePopupProps) => {
     const [note, setNote] = useState('');
     const { baseURL } = useApi();
     const [loading, setLoading] = useState(false)
 
     const handleAddNote = async () => {
         if (note.trim() === '') {
-            alert("Empty note canot be added");
+            toast.error("Empty note canot be added");
             return;
         }
         try {
@@ -24,11 +26,12 @@ const CreateNotePopup = ({ onClose, onAdd }: CreateNotePopupProps) => {
             console.log('inside handleAddNote')
             const res = await axios.post(`${baseURL}/add-note`, { note }, { withCredentials: true });
             if (res.data.success) {
-                alert("Note added")
+                 toast.success("Note Added")
+                 setNote('')
             }
 
-        } catch (error) {
-
+        } catch (error: any) {
+          toast.error(error.response?.data?.message || 'Something went wrong');
         } finally {
             setLoading(false)
         }
