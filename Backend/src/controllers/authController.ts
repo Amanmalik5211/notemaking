@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import User from "../models/user.js";
 import OtpVerification from "../models/otpVerification.js";
 import nodemailer from "nodemailer";
+import { generateToken } from "../lib/generateToken.js";
+import jwt from 'jsonwebtoken'
 
 export const getOTP = async (req: Request, res: Response)=> {
   const { email } = req.body;
@@ -34,7 +36,7 @@ export const getOTP = async (req: Request, res: Response)=> {
 
 export const verifyOTP = async (req: Request, res: Response) => {
   const { email, otp, name, DOB } = req.body;
-  console.log("verifyOTP",email, otp, name, DOB )
+//   console.log("verifyOTP",email, otp, name, DOB )
   try {
     const record = await OtpVerification.findOne({ email });
 
@@ -49,11 +51,29 @@ export const verifyOTP = async (req: Request, res: Response) => {
       return res.status(409).json({ success: false, message: "User already exists" });
     }
 
-    const newUser = await User.create({ name, email, DOB });
+    const newUser = await User.create({ name, email, DOB })  as { _id: string };;
+    generateToken(newUser._id, res);
+
 
     res.status(201).json({ success: true, message: "User created successfully", user: newUser });
   } catch (error) {
     console.error("Error verifying OTP:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+
+export const uiValidation = async (req: Request, res: Response) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ authenticated: false });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string };
+    return res.json({ authenticated: true, userId: decoded.userId });
+  } catch (err) {
+    return res.status(401).json({ authenticated: false });
   }
 };

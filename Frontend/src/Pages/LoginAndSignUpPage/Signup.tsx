@@ -2,8 +2,10 @@ import './LoginAndSignUp.css';
 import loginImage from '../../assets/loginPageImage.jpg';
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+    const navigate = useNavigate();
     const baseURL = "http://localhost:4000";
     const [otp, setOtp] = useState('');
     const [otpSent,setOtpSent] = useState(false)
@@ -39,9 +41,11 @@ const Signup = () => {
         e.preventDefault();
         setLoading(true);
 
-        try {const res = await axios.post(`${baseURL}/verify-otp`, {email, DOB:dob, name,otp,});
+        try {
+            const res = await axios.post(`${baseURL}/verify-otp`, {email, DOB:dob, name,otp,},{withCredentials:true});
 
             if (res.data.success) {
+                navigate('/Dashboard')
                 alert('Signup successful');
             } else {
                 alert(res.data.message || 'Signup failed');
