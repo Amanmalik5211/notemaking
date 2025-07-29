@@ -1,13 +1,28 @@
 
 import './DashboardHeader.css'
 import logo from '../../assets/logo.png'
+import axios from 'axios';
+import { useApi } from '../ContextApi';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const DashboardHeader = () => {
+  const { baseURL } = useApi();
+  const navigate = useNavigate();
+  const handleSignOut = async () => {
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+    if (!confirmLogout) return;
+    try {
+      const res = await axios.get(`${baseURL}/logout`, { withCredentials: true });
+      if (res.data.success) {
+        navigate('/')
+        alert(res.data.message)
 
-  const handleSignOut = () => {
-    console.log('Sign out clicked');
+      }
+    } catch (err: any) {
+      alert(err.res.data.message)
+    }
   };
 
   return (

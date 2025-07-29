@@ -1,8 +1,8 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 interface INote {
-  text: string;
-  _id?: string; 
+  _id?: string;
+  text?: string;
 }
 
 export interface IUser extends Document {
@@ -15,7 +15,7 @@ export interface IUser extends Document {
 }
 
 const NoteSchema = new Schema<INote>({
-  text: { type: String, required: true }
+  text: { type: String }
 });
 
 const UserSchema: Schema<IUser> = new Schema(

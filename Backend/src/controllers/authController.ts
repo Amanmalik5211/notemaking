@@ -5,6 +5,12 @@ import nodemailer from "nodemailer";
 import { generateToken } from "../lib/generateToken.js";
 import jwt from 'jsonwebtoken'
 
+interface CustomRequest extends Request {
+  user?: {
+    _id: string;
+  };
+}
+
 export const getOTP = async (req: Request, res: Response) => {
   const { email, type } = req.body;
 
@@ -28,14 +34,14 @@ export const getOTP = async (req: Request, res: Response) => {
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    await OtpVerification.deleteMany({ email }); 
+    await OtpVerification.deleteMany({ email });
     await OtpVerification.create({ email, otp });
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'prashantawasthi251@gmail.com',        
-        pass: 'omgp bxhi pzcd lwdk'       
+        user: 'prashantawasthi251@gmail.com',
+        pass: 'omgp bxhi pzcd lwdk'
       }
     });
 
@@ -70,7 +76,7 @@ export const verifyOtpforSignup = async (req: Request, res: Response) => {
       return res.status(409).json({ success: false, message: "User already exists" });
     }
 
-    const newUser = await User.create({ name, email, DOB })  as { _id: string };
+    const newUser = await User.create({ name, email, DOB }) as { _id: string };
     generateToken(newUser._id, res);
 
 
@@ -120,4 +126,25 @@ export const uiValidation = async (req: Request, res: Response) => {
   } catch (err) {
     return res.status(401).json({ authenticated: false });
   }
+};
+
+export const logout = async (req: CustomRequest, res: Response) => {
+  const user = req.user;
+
+  if (!user) {
+    return res.status(401).json({ success: false, message: "Unauthorized" });
+  }
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true, 
+      sameSite: "strict",
+    });
+
+    return res.status(200).json({ success: true, message: "Logged out successfully" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.status(500).json({ success: false, message: "Something went wrong during logout" });
+  }
+
 };

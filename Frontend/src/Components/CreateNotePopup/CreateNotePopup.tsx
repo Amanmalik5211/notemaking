@@ -11,30 +11,27 @@ interface CreateNotePopupProps {
 
 const CreateNotePopup = ({ onClose, onAdd }: CreateNotePopupProps) => {
     const [note, setNote] = useState('');
-    console.log(note)
-    const {baseURL} = useApi();
-    const [loading,setLoading] = useState(false)
+    const { baseURL } = useApi();
+    const [loading, setLoading] = useState(false)
 
     const handleAddNote = async () => {
-     if(note.trim() === '')
-     {
-        alert("Empty note canot be added");
-        return;
-     }
-     try {
-        setLoading(true)
-        console.log('inside handleAddNote')
-        const res = await axios.post(`${baseURL}/add-note`,{note},{withCredentials:true});
-        if(res.data.success)
-        {
-            alert("Note added")
+        if (note.trim() === '') {
+            alert("Empty note canot be added");
+            return;
         }
-        
-     } catch (error) {
-        
-     } finally{
-        setLoading(false)
-     }
+        try {
+            setLoading(true)
+            console.log('inside handleAddNote')
+            const res = await axios.post(`${baseURL}/add-note`, { note }, { withCredentials: true });
+            if (res.data.success) {
+                alert("Note added")
+            }
+
+        } catch (error) {
+
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -51,7 +48,11 @@ const CreateNotePopup = ({ onClose, onAdd }: CreateNotePopupProps) => {
                     onChange={(e) => { setNote(e.target.value) }}
                     rows={4}
                 />
-                <button className="add-button" onClick={() => { handleAddNote() }}>Add</button>
+                <button disabled={loading}
+                    style={{ background: `${loading ? 'gray' : '#007bff'}`,fontSize:15,fontWeight:700}}
+                    className="add-button" onClick={() => { handleAddNote() }}>
+                    {loading ? 'Adding..' : 'Add'}
+                </button>
             </div>
         </div>
     );
