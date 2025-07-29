@@ -4,6 +4,7 @@ import logo from '../../assets/logo.png'
 import axios from 'axios';
 import { useApi } from '../ContextApi';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 
@@ -17,11 +18,11 @@ const DashboardHeader = () => {
       const res = await axios.get(`${baseURL}/logout`, { withCredentials: true });
       if (res.data.success) {
         navigate('/')
-        alert(res.data.message)
+        toast.success(res.data.message)
 
       }
     } catch (err: any) {
-      alert(err.res.data.message)
+      toast.error(err.response?.data?.message || 'Something went wrong');
     }
   };
 
