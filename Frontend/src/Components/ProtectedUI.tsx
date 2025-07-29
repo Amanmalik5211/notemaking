@@ -15,7 +15,7 @@ const ProtectedUI: React.FC<ProtectedUIProps> = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get<{ authenticated: boolean }>(`${baseURL}/uiValidation`, {
+        const res = await axios.get(`${baseURL}/uiValidation`, {
           withCredentials: true,
         });
         setIsAuth(res.data.authenticated);
