@@ -88,7 +88,7 @@ const Login = () => {
 
             if (res.data.success) {
                 navigate('/Dashboard')
-                toast.success('Login successful');
+                toast.success('Login successfull');
             } else {
                 toast.error(res.data.message || 'Login failed');
             }
