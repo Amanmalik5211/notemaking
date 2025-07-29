@@ -148,3 +148,30 @@ export const logout = async (req: CustomRequest, res: Response) => {
   }
 
 };
+
+
+export const googleLogin = async (req: CustomRequest, res: Response) => {
+  try {
+    const { email, name } = req.body;
+
+    if (!email || !name) {
+      return res.status(400).json({ message: "Invalid Google user data" });
+    }
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = await User.create({name,email,isGoogleUser: true, });
+    }
+    if (!user || !user._id) {
+      return res.status(500).json({ message: "User creation failed" });
+    }
+
+    generateToken(user._id.toString(), res);
+    res.status(200).json({success: true,message: "Logged in Via Google Successfully"});
+
+  } catch (error) {
+    console.error("Google Login Error:", error);
+    res.status(500).json({ message: "Server error during Google login" });
+  }
+};
