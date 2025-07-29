@@ -115,7 +115,7 @@ export const verifyOtpforLogin = async (req: Request, res: Response) => {
 
 export const uiValidation = async (req: Request, res: Response) => {
   const token = req.cookies.token;
-
+  console.log(token,"this is from UI validation")
   if (!token) {
     return res.status(401).json({ authenticated: false });
   }
