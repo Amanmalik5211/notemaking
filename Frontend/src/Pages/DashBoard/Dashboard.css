@@ -21,6 +21,12 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
 }
+.dashboard-box p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
 
 .dashboard-box h2 {
   font-size: 4rem;
@@ -72,16 +78,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f6f6f6;
-  padding: 1rem;
-  gap: 1rem;
+  padding: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
   border-radius: 6px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .note-text {
-  font-size: 2rem;
-  color: #333;
+  flex: 1;
+  font-size: medium;
+  margin-right: 10px;
+  word-break: break-word;
 }
 
 .delete-btn {
