@@ -18,7 +18,7 @@ const Signup = () => {
         e.preventDefault();
         try {
             setLoading(true);
-            const response = await axios.post(`${baseURL}/get-otp`, { email })
+            const response = await axios.post(`${baseURL}/get-otp`, { email,type:"signup" })
 
             if (response.data.success) {
                 alert("OTP sent to your email");
@@ -42,7 +42,7 @@ const Signup = () => {
         setLoading(true);
 
         try {
-            const res = await axios.post(`${baseURL}/verify-otp`, {email, DOB:dob, name,otp,},{withCredentials:true});
+            const res = await axios.post(`${baseURL}/verify-otp-for-signup`, {email, DOB:dob, name,otp,},{withCredentials:true});
 
             if (res.data.success) {
                 navigate('/Dashboard')
@@ -103,7 +103,7 @@ const Signup = () => {
 
                     <span style={{ alignSelf: 'center' }}>
                         Already have an account??
-                        <a style={{ color: 'blue', cursor: 'pointer', textDecoration: 'underline' }}>
+                        <a style={{ color: 'blue', cursor: 'pointer', textDecoration: 'underline' }} onClick={()=>navigate('/')}>
                             {' '}sign in
                         </a>
                     </span>

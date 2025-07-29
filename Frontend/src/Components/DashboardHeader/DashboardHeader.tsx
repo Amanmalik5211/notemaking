@@ -21,10 +21,6 @@ const DashboardHeader = () => {
           Sign Out
         </button>
       </nav>
-
-      <div className="dashboard-content">
-        dashboard
-      </div>
     </div>
   )
 }

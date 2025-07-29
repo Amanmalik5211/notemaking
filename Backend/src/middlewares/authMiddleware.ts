@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from "../models/user"; 
+import User from "../models/user.js"; 
 import { Request, Response, NextFunction } from "express";
 
 interface AuthenticatedRequest extends Request {
@@ -28,7 +28,7 @@ export const protectedRoute = async (
       res.status(401).json({ error: "User not found" });
       return;
     }
-
+    console.log('user detecvted in authMiddleware',user)
     req.user = user;
     next();
   } catch (error) {

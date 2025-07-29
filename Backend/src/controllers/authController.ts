@@ -5,10 +5,28 @@ import nodemailer from "nodemailer";
 import { generateToken } from "../lib/generateToken.js";
 import jwt from 'jsonwebtoken'
 
-export const getOTP = async (req: Request, res: Response)=> {
-  const { email } = req.body;
+export const getOTP = async (req: Request, res: Response) => {
+  const { email, type } = req.body;
 
   try {
+    if (!email || !type) {
+      return res.status(400).json({ success: false, message: "Email is required" });
+    }
+
+    if (type === 'signup') {
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({ success: false, message: "User already exists. Please login instead." });
+      }
+    } else if (type === 'login') {
+      const existingUser = await User.findOne({ email });
+      if (!existingUser) {
+        return res.status(404).json({ success: false, message: "User not found. Please sign up first." });
+      }
+    } else {
+      return res.status(400).json({ success: false, message: "Invalid request type." });
+    }
+
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     await OtpVerification.deleteMany({ email }); 
     await OtpVerification.create({ email, otp });
@@ -20,10 +38,11 @@ export const getOTP = async (req: Request, res: Response)=> {
         pass: 'omgp bxhi pzcd lwdk'       
       }
     });
+
     await transporter.sendMail({
       from: 'Highway Delite',
       to: email,
-      subject: 'Your OTP Code for Signup at Highway Delite',
+      subject: `Your OTP Code for ${type} at Highway Delite`,
       text: `Your OTP code is ${otp}`,
     });
 
@@ -34,9 +53,9 @@ export const getOTP = async (req: Request, res: Response)=> {
   }
 };
 
-export const verifyOTP = async (req: Request, res: Response) => {
+
+export const verifyOtpforSignup = async (req: Request, res: Response) => {
   const { email, otp, name, DOB } = req.body;
-//   console.log("verifyOTP",email, otp, name, DOB )
   try {
     const record = await OtpVerification.findOne({ email });
 
@@ -51,7 +70,7 @@ export const verifyOTP = async (req: Request, res: Response) => {
       return res.status(409).json({ success: false, message: "User already exists" });
     }
 
-    const newUser = await User.create({ name, email, DOB })  as { _id: string };;
+    const newUser = await User.create({ name, email, DOB })  as { _id: string };
     generateToken(newUser._id, res);
 
 
@@ -62,6 +81,31 @@ export const verifyOTP = async (req: Request, res: Response) => {
   }
 };
 
+export const verifyOtpforLogin = async (req: Request, res: Response) => {
+  const { email, otp } = req.body;
+
+  if (!email || !otp) {
+    return res.status(400).json({ success: false, message: 'Email and OTP are required' });
+  }
+  try {
+    const record = await OtpVerification.findOne({ email });
+
+    if (!record || record.otp !== otp) {
+      return res.status(401).json({ success: false, message: 'Invalid or expired OTP' });
+    }
+    await OtpVerification.deleteMany({ email });
+    const existingUser = await User.findOne({ email }) as { _id: string };
+
+    if (!existingUser) {
+      return res.status(404).json({ success: false, message: 'User not found. Please sign up first.' });
+    }
+    generateToken(existingUser._id, res);
+    return res.status(200).json({ success: true, message: 'Login successful', userId: existingUser._id });
+  } catch (error) {
+    console.error('OTP login error:', error);
+    return res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
 
 export const uiValidation = async (req: Request, res: Response) => {
   const token = req.cookies.token;

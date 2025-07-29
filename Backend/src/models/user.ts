@@ -7,7 +7,6 @@ export interface IUser extends Document {
   notes: string[];
   provider?: string;
   providerId?: string;
-  OTP?: string;
 }
 
 const UserSchema: Schema<IUser> = new Schema(
@@ -18,7 +17,6 @@ const UserSchema: Schema<IUser> = new Schema(
     notes: { type: [String], default: [] },
     provider: { type: String },
     providerId: { type: String },
-    OTP: { type: String },
   },
   { timestamps: true }
 );

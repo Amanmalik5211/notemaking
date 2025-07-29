@@ -4,6 +4,7 @@ import cors from 'cors';
 import cookieParser from "cookie-parser";
 import connectDB from "./lib/connectDB.js";
 import authRoute from './routes/authRoute.js'
+import noteRoute from './routes/noteRoute.js'
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(cors({
 }));
 
 app.use('/',authRoute);
+app.use('/',noteRoute)
 
 app.listen(PORT, async () => {
   console.log(`Server is running on PORT ${PORT}`);

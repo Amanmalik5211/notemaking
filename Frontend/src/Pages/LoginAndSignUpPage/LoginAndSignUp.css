@@ -1,13 +1,11 @@
 .auth-container {
     padding: 1rem 4rem;
     display: flex;
-    border: 1px solid black;
     height: 100vh;
 }
 
 .loginSignup-form {
     flex: 2;
-    border: 1px solid black;
     padding: 2rem;
     display: flex;
     align-items: center;
@@ -82,7 +80,6 @@
 
 .right-image {
     flex: 3;
-    border: 1px solid black;
     border-radius: 10px;
     overflow: hidden;
 
