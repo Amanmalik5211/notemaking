@@ -12,7 +12,7 @@ interface ApiProviderProps {
 }
 
 export const ApiProvider: React.FC<ApiProviderProps> = ({ children }) => {
-  const baseURL = 'http://localhost:4000';
+  const baseURL = 'https://highway-delite-assignment-backend-5w1o.onrender.com';
 
   return (
     <ApiContext.Provider value={{ baseURL }}>
