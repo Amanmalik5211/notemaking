@@ -9,8 +9,8 @@ export const generateToken = (userId: string, res: Response): string => {
     console.log(token,'generatetoken hitted 2')
     res.cookie("token", token, {
         httpOnly: true,
-        sameSite: "strict",
-        secure:true,
+        sameSite: "None",
+        secure: true,
         maxAge: 12 * 60 * 60 * 1000,
     });
 
