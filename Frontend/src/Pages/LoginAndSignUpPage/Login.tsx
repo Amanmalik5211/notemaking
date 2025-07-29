@@ -56,8 +56,9 @@ const Login = () => {
         }
         try {
             setLoading(true);
+            
             const response = await axios.post(`${baseURL}/get-otp`, { email, type: "login" })
-
+            console.log(email,baseURL,"get OTP for login page");
             if (response.data.success) {
                 toast.success("OTP sent to your email");
                 setOtpSent(true);
