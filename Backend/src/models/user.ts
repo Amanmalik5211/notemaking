@@ -12,6 +12,7 @@ export interface IUser extends Document {
   notes: INote[];
   provider?: string;
   providerId?: string;
+  isGoogleUser?:Boolean
 }
 
 const NoteSchema = new Schema<INote>({
@@ -21,11 +22,12 @@ const NoteSchema = new Schema<INote>({
 const UserSchema: Schema<IUser> = new Schema(
   {
     email: { type: String, required: true, unique: true },
-    name: { type: String },
+    name: { type: String, required: true},
     DOD: { type: Date },
     notes: { type: [NoteSchema], default: [] },
     provider: { type: String },
-    providerId: { type: String }
+    providerId: { type: String },
+    isGoogleUser:{type:Boolean,default: false}
   },
   { timestamps: true }
 );
