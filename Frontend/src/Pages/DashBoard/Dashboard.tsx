@@ -19,10 +19,11 @@ const Dashboard = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [notes, setNotes] = useState<Note[]>([]);
-
+  const [loading, setLoading] = useState(false);
 
   const fetchDetails = async () => {
     try {
+      setLoading(true);
       const res = await axios.get(`${baseURL}/fetch-details`, { withCredentials: true });
       const { name, email, notes } = res.data.data;
       setName(name);
@@ -30,6 +31,8 @@ const Dashboard = () => {
       setNotes(notes);
     } catch (error: any) {
         toast.error(error.response?.data?.message || 'Something went wrong');
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -76,14 +79,24 @@ const Dashboard = () => {
 
         
         <div className='scroll-wrapper'>
-         {notes.length<=0?(<p className='note-text'>No Notes available</p>):( <div className='notes-list'>
-            {notes.map((note) => (
-              <div className='note-item' key={note._id}>
-                <p className='note-text'>{note.text}</p>
-                <MdDelete style={{cursor:"pointer"}} size={25} onClick={() => { handleDeleteNote(note._id) }} />
-              </div>
-            ))}
-          </div>)}
+        {loading ? (
+  <p className="note-text">Loading Notes...</p>
+) : notes.length <= 0 ? (
+  <p className="note-text">No Notes available</p>
+) : (
+  <div className="notes-list">
+    {notes.map((note) => (
+      <div className="note-item" key={note._id}>
+        <p className="note-text">{note.text}</p>
+        <MdDelete
+          style={{ cursor: "pointer" }}
+          size={25}
+          onClick={() => handleDeleteNote(note._id)}
+        />
+      </div>
+    ))}
+  </div>
+)}
         </div>
       </div>
     </div>
