@@ -5,10 +5,10 @@ frontend run command - npm run dev
 backend run command - npm run dev
 
 ********************* PROBLEMS FACED ***************************
+
 1.) Since i was using login with google so I have to add google_client_id and google_client_secret, so gitHub was not pushing my code due to security, I manually upload files then 
 
 
-============================================================================================================================================================
 
 ********************* IMPORTANT NOTE ****************************
 
