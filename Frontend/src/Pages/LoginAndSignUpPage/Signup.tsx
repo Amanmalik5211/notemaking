@@ -123,7 +123,7 @@ const Signup = () => {
 
                     <button style={{ backgroundColor: loading ? '#ccc' : '#007bff',}} onClick={otpSent ? handleSignup : getOTP} disabled={loading}>
                         {loading
-                            ? '...'
+                            ? 'Wait...'
                             : otpSent
                                 ? 'Sign Up'
                                 : 'Get OTP'}
