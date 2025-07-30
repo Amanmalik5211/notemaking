@@ -21,6 +21,7 @@ const Login = () => {
     const login = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
             try {
+                setLoading(true);
                 const res = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
                     headers: {
                         Authorization: `Bearer ${tokenResponse.access_token}`,
@@ -37,7 +38,9 @@ const Login = () => {
 
             } catch (error) {
                 toast.error("Failed to fetch user info");
-            }
+            }finally {
+            setLoading(false); 
+        }
         },
         onError: () => {
             toast.error("Login Failed");
@@ -125,9 +128,9 @@ const Login = () => {
 
                     }
 
-                    <button onClick={otpSent ? handleLogin : getOTP} disabled={loading}>
+                    <button style={{ backgroundColor: loading ? '#ccc' : '#007bff',}} onClick={otpSent ? handleLogin : getOTP} disabled={loading}>
                         {loading
-                            ? '...'
+                            ? 'Wait...'
                             : otpSent
                                 ? 'Login'
                                 : 'Get OTP'}
