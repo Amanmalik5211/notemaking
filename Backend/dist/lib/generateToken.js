@@ -7,8 +7,8 @@ export const generateToken = (userId, res) => {
     console.log(token, 'generatetoken hitted 2');
     res.cookie("token", token, {
         httpOnly: true,
-        sameSite: "strict",
-        secure: process.env.NODE_ENV === "production",
+        sameSite: "None",
+        secure: true,
         maxAge: 12 * 60 * 60 * 1000,
     });
     return token;
