@@ -17,6 +17,11 @@ const Login = () => {
     const [otpSent, setOtpSent] = useState(false);
     const [otp, setOtp] = useState('');
 
+    useEffect(() => {
+  if (loading) {
+    toast.error("If you are visiting for the 1st time, wait 20–30 seconds as the Render free version shuts down the backend when idle. It will work as usual after that.");
+  }
+}, [loading]);
 
     const login = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
