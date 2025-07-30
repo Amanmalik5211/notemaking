@@ -1,6 +1,6 @@
 step -1 Created backend and frontend setup with type Script support.
 
-frontend run command - npm run dev
+frontend run command - npm run dev /
 backend run command - npm run dev
 
 ********************* PROBLEMS FACED ***************************
