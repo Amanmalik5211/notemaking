@@ -121,7 +121,7 @@ const Signup = () => {
                         </fieldset>
                     )}
 
-                    <button onClick={otpSent ? handleSignup : getOTP} disabled={loading}>
+                    <button style={{ backgroundColor: loading ? '#ccc' : '#007bff',}} onClick={otpSent ? handleSignup : getOTP} disabled={loading}>
                         {loading
                             ? '...'
                             : otpSent
