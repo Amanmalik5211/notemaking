@@ -17,6 +17,12 @@ const Signup = () => {
     const [name, setName] = useState('');
     const [dob, setDob] = useState('')
 
+      useEffect(() => {
+  if (loading) {
+    toast.error("If you are visiting for the 1st time, wait 20–30 seconds as the Render free version shuts down the backend when idle. It will work as usual after that.");
+  }
+}, [loading]);
+    
     const isValidName = (name: string) => {
         return name.trim().length >= 2 && name.split('').every(char =>
             /^[a-zA-Z ]$/.test(char)
