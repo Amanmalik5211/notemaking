@@ -1,25 +1,122 @@
-step -1 Created backend and frontend setup with type Script support.
+# 📒 Note-Taking Application
 
-step -2 Get the MONGODB_URL from mongoDB atlas and paste it in .env of backend and created a JWT_SECRET in backend too.
+A full-stack note-taking application built with **ReactJS (TypeScript)**, **Node.js (TypeScript)**, and **MongoDB**.  
+Users can sign up using **Email + OTP** or **Google Authentication**, create and delete notes, and stay authenticated using **JWT**.  
+The app is fully responsive and closely replicates the provided design.  
 
-frontend run command - npm run dev 
+🔗 **Live Demo:** [Deployed on Render](https://your-app-url.onrender.com)  
+📂 **Repository:** [GitHub Repo](https://github.com/your-repo-link)  
 
-backend run command - npm run dev
+---
 
-step -3 I created two schemas otpVeification.js and user.js and in user.js an extra field named isGoogleUser:Boolean so that if anyone login with with it becomes true else false.
+## 🚀 Features
 
-step -4 for google login I use OAuth functionality in which we need client ID and Client Secret keys and which will be stored in .env in frontend.
+- 🔑 **Authentication**
+  - Sign up with Email + OTP flow.  
+  - Sign up/Login with Google account (if registered with Google).  
+  - JWT-based authentication & authorization.  
 
-step -5 after successfull complete of code i run npm run build in backend terminal for creation of /dist and then deployed both backend and frontend in render.
+- 📝 **Notes Management**
+  - Create personal notes.  
+  - Delete notes securely.  
+  - Notes are linked to the authenticated user.  
+
+- ⚡ **Error Handling & Validation**
+  - Real-time form validation.  
+  - Friendly error messages for invalid inputs, expired OTP, or failed API requests.  
+
+- 📱 **Responsive Design**
+  - Mobile-first, closely matching the provided design.  
+
+---
+
+## 🛠️ Tech Stack
+
+**Frontend:**  
+- ReactJS (TypeScript)  
+- Axios (API calls)  
+- React Router DOM  
+- React Toastify (notifications)  
+
+**Backend:**  
+- Node.js (TypeScript) with Express  
+- JWT (Authentication)  
+- Bcrypt.js (Password security)  
+- Passport.js (Google OAuth2)  
+
+**Database:**  
+- MongoDB with Mongoose  
+
+**Deployment:**  
+- Render (Frontend + Backend)  
+- MongoDB Atlas (Database)  
+
+**Version Control:**  
+- Git & GitHub  
+
+---
+
+## 📂 Project Structure
+
+note-taking-app/
+│── backend/ # Node.js + Express API
+│ ├── src/
+│ │ ├── config/ # DB & auth configs
+│ │ ├── controllers/ # API controllers
+│ │ ├── models/ # Mongoose models
+│ │ ├── routes/ # Express routes
+│ │ └── utils/ # Helper functions
+│ └── server.ts # Entry point
+│
+│── frontend/ # ReactJS App
+│ ├── src/
+│ │ ├── assets/ # Static assets
+│ │ ├── components/ # Reusable UI components
+│ │ ├── pages/ # Pages (Login, Signup, Notes, etc.)
+│ │ ├── context/ # API & Auth context
+│ │ └── App.tsx # Root component
+│
+│── README.md
+│── package.json
+│── .gitignore
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/Amanmalik5211/notemaking.git
+cd notemaking
+
+2️⃣ Setup Backend
+cd backend
+npm install
+
+Create a .env file inside /backend:
+
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+FRONTEND_URL=https://your-frontend.onrender.com
 
 
+Run the server:
 
-********************* PROBLEMS FACED ***************************
+npm run dev
 
-1.) Since i was using login with google so I have to add google_client_id and google_client_secret, so gitHub was not pushing my code due to security, I manually upload files then 
+3️⃣ Setup Frontend
+cd ../frontend
+npm install
 
 
+Create a .env file inside /frontend:
 
-********************* IMPORTANT NOTE ****************************
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+REACT_APP_API_URL=https://your-backend.onrender.com
 
-I have used render free version for deployment so it automatically shuts when no one is using for 15 minutes, so, when you login it will initially take 10-15 seconds on on backend.
+
+Run the client:
+
+npm start
