@@ -4,11 +4,6 @@ A full-stack note-taking application built with **ReactJS (TypeScript)**, **Node
 Users can sign up using **Email + OTP** or **Google Authentication**, create and delete notes, and stay authenticated using **JWT**.  
 The app is fully responsive and closely replicates the provided design.  
 
-🔗 **Live Demo:** [Deployed on Render](https://your-app-url.onrender.com)  
-📂 **Repository:** [GitHub Repo](https://github.com/your-repo-link)  
-
----
-
 ## 🚀 Features
 
 - 🔑 **Authentication**
@@ -53,32 +48,6 @@ The app is fully responsive and closely replicates the provided design.
 
 **Version Control:**  
 - Git & GitHub  
-
----
-
-## 📂 Project Structure
-
-note-taking-app/
-│── backend/ # Node.js + Express API
-│ ├── src/
-│ │ ├── config/ # DB & auth configs
-│ │ ├── controllers/ # API controllers
-│ │ ├── models/ # Mongoose models
-│ │ ├── routes/ # Express routes
-│ │ └── utils/ # Helper functions
-│ └── server.ts # Entry point
-│
-│── frontend/ # ReactJS App
-│ ├── src/
-│ │ ├── assets/ # Static assets
-│ │ ├── components/ # Reusable UI components
-│ │ ├── pages/ # Pages (Login, Signup, Notes, etc.)
-│ │ ├── context/ # API & Auth context
-│ │ └── App.tsx # Root component
-│
-│── README.md
-│── package.json
-│── .gitignore
 
 ---
 
